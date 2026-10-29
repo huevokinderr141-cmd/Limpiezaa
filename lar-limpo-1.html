@@ -1,0 +1,592 @@
+<title>Lar Limpo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600&display=swap">
+<style>
+/* Layout: azulejo-tile hero beside the headline, calm single-column sections below, floating book bar on phones.
+   Deliberately a single bright look: a cleaning business should feel light on every device. */
+:root {
+  color-scheme: only light;
+  --bg: #FDFEFF;
+  --surface: #FFFFFF;
+  --ink: #0E1B38;
+  --muted: #4B5A78;
+  --brand: #1D4EA8;
+  --brand-ink: #FFFFFF;
+  --soft: #F0F5FD;
+  --line: #DCE5F3;
+  --accent: #F0C24B;
+  --tile-bg: #FBFDFF;
+  --tile-fill: #E6EEFB;
+  --font-display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+  --font-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 17px;
+  line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0 84px;
+  overflow-x: clip;
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 30; background: var(--bg);
+}
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.12; margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+p { margin: 0; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+.wrap { max-width: 1080px; margin: 0 auto; }
+section { padding-block: 72px; }
+.eyebrow { font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--brand); }
+.h2 { font-size: clamp(28px, 5vw, 40px); margin-top: 10px; }
+
+/* Header */
+.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
+  padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px));
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 64px; }
+.logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--font-display); font-weight: 700; font-size: 20px; }
+.logo svg { width: 30px; height: 30px; flex: none; }
+.nav { display: none; gap: 26px; font-size: 15px; font-weight: 500; }
+.nav a { text-decoration: none; color: var(--muted); }
+.nav a:hover { color: var(--ink); }
+.top-right { display: flex; align-items: center; gap: 10px; }
+.lang { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px; background: var(--surface); }
+.lang button {
+  font: inherit; font-size: 13px; font-weight: 600; letter-spacing: 0.04em;
+  border: 0; background: transparent; color: var(--muted);
+  padding: 5px 11px; border-radius: 999px; cursor: pointer; min-height: 30px;
+}
+.lang button[aria-pressed="true"] { background: var(--brand); color: var(--brand-ink); }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+  font: inherit; font-weight: 600; font-size: 16px; text-decoration: none; cursor: pointer;
+  padding: 13px 22px; border-radius: 12px; border: 1.5px solid var(--brand);
+  background: var(--brand); color: var(--brand-ink); min-height: 48px;
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 10px 24px -12px var(--brand); }
+.btn.ghost { background: transparent; color: var(--brand); }
+.btn.small { padding: 8px 16px; min-height: 40px; font-size: 15px; }
+.btn svg { width: 20px; height: 20px; flex: none; }
+
+/* Hero */
+.hero { padding-block: 44px 64px; }
+.hero .wrap { display: grid; gap: 40px; align-items: center; }
+.hero h1 { font-size: clamp(38px, 8.5vw, 66px); margin-top: 14px; font-weight: 700; }
+.hero h1 em { font-style: normal; color: var(--brand); box-shadow: inset 0 -0.28em 0 color-mix(in srgb, var(--accent) 55%, transparent); }
+.hero .sub { margin-top: 20px; font-size: 19px; color: var(--muted); max-width: 46ch; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+.panel {
+  position: relative; aspect-ratio: 1 / 1; max-width: 100%; width: 100%;
+  border-radius: 6px 90px 6px 6px; overflow: hidden; border: 1.5px solid var(--brand);
+  background: var(--tile-bg);
+}
+.panel .tiles { position: absolute; inset: -40px 0 -40px 0; width: 100%; height: calc(100% + 80px); will-change: transform; }
+.t-bg { fill: var(--tile-bg); }
+.t-petal { fill: var(--tile-fill); stroke: var(--brand); stroke-width: 1.5; }
+.t-gem { fill: var(--accent); stroke: var(--brand); stroke-width: 1.5; }
+.badge {
+  position: absolute; left: 16px; bottom: 16px; right: 16px; max-width: 320px;
+  background: var(--surface); border: 1.5px solid var(--brand); border-radius: 6px;
+  padding: 16px 18px; display: flex; align-items: center; gap: 14px;
+}
+.badge svg { width: 38px; height: 38px; flex: none; }
+.badge b { font-family: var(--font-display); font-size: 20px; display: block; line-height: 1.1; }
+.badge span { font-size: 14px; color: var(--muted); }
+
+/* Services */
+.grid3 { display: grid; gap: 18px; margin-top: 34px; }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 26px; }
+.card .ico { width: 44px; height: 44px; color: var(--brand); }
+.card h3 { font-size: 24px; margin-top: 16px; }
+.card p { margin-top: 10px; color: var(--muted); }
+.band { background: var(--soft); margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px)); }
+
+/* Steps */
+.steps { display: grid; gap: 28px; margin-top: 36px; counter-reset: s; }
+.step { display: grid; grid-template-columns: 52px 1fr; gap: 18px; align-items: start; }
+.step::before {
+  counter-increment: s; content: counter(s);
+  width: 52px; height: 52px; display: grid; place-items: center;
+  font-family: var(--font-display); font-weight: 700; font-size: 24px;
+  color: var(--brand-ink); background: var(--brand); border-radius: 50% 50% 50% 6px;
+}
+.step h3 { font-size: 22px; }
+.step p { margin-top: 6px; color: var(--muted); }
+
+/* Why */
+.why { display: grid; gap: 22px 40px; margin-top: 34px; }
+.why div { border-top: 2px solid var(--brand); padding-top: 14px; }
+.why h3 { font-size: 21px; }
+.why p { margin-top: 6px; color: var(--muted); }
+
+/* Booking */
+.book { display: grid; gap: 36px; }
+.form { background: var(--surface); border: 1.5px solid var(--brand); border-radius: 6px 40px 6px 6px; padding: 26px; display: grid; gap: 16px; }
+.field { display: grid; gap: 6px; min-width: 0; }
+.field label { font-size: 14px; font-weight: 600; }
+.field label small { font-weight: 400; color: var(--muted); }
+.field input, .field select, .field textarea {
+  font: inherit; font-size: 16px; color: var(--ink); background: var(--bg);
+  border: 1.5px solid var(--line); border-radius: 10px; padding: 12px 14px; width: 100%; min-height: 48px;
+}
+.field textarea { resize: vertical; min-height: 96px; }
+.field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 25%, transparent); }
+.row2 { display: grid; gap: 16px; }
+.hint { font-size: 14px; color: var(--muted); }
+.fine { margin-top: 18px; color: var(--muted); max-width: 46ch; }
+
+/* Contact */
+.contact { text-align: left; }
+.num { font-family: var(--font-display); font-weight: 700; font-size: clamp(32px, 7vw, 52px); margin-top: 16px; user-select: all; -webkit-user-select: all; overflow-wrap: anywhere; }
+.contact .cta-row { margin-top: 24px; }
+
+footer { border-top: 1px solid var(--line); padding-block: 28px; color: var(--muted); font-size: 14px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; }
+
+/* Floating book bar (phones) */
+.float {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 25;
+  padding: 10px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  background: color-mix(in srgb, var(--bg) 94%, transparent); backdrop-filter: blur(10px);
+  border-top: 1px solid var(--line);
+}
+.float .btn { width: 100%; }
+
+/* Motion */
+.rise { animation: rise .8s cubic-bezier(.2,.7,.2,1) both; animation-delay: var(--d, 0s); }
+@keyframes rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+.anim .reveal { opacity: 0; transform: translateY(64px) scale(.97); transition: opacity 1s ease, transform 1s cubic-bezier(.2,.7,.2,1); transition-delay: var(--d, 0s); }
+.anim .reveal.from-left { transform: translateX(-56px); }
+.anim .reveal.from-right { transform: translateX(56px); }
+.anim .reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .rise { animation: none; }
+  .anim .reveal, .anim .reveal.from-left, .anim .reveal.from-right { transform: none; }
+  .btn:hover { transform: none; }
+}
+
+@media (min-width: 640px) {
+  .grid3 { grid-template-columns: repeat(3, 1fr); }
+  .why { grid-template-columns: repeat(2, 1fr); }
+  .row2 { grid-template-columns: 1fr 1fr; }
+}
+@media (min-width: 860px) {
+  .nav { display: flex; }
+  .hero .wrap { grid-template-columns: 1.1fr 0.9fr; gap: 56px; }
+  .steps { grid-template-columns: repeat(3, 1fr); }
+  .step { grid-template-columns: 1fr; }
+  .book { grid-template-columns: 0.8fr 1.2fr; align-items: start; }
+  .float { display: none; }
+  body { padding-bottom: 0; }
+}
+@media (max-width: 560px) {
+  .top-right .btn { display: none; }
+  .logo { font-size: 18px; }
+  section { padding-block: 56px; }
+}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#inicio" aria-label="Lar Limpo">
+      <svg viewBox="0 0 40 40" aria-hidden="true">
+        <g class="t-petal"><circle cx="20" cy="4" r="12"/><circle cx="36" cy="20" r="12"/><circle cx="20" cy="36" r="12"/><circle cx="4" cy="20" r="12"/></g>
+        <path class="t-gem" d="M20 11 L29 20 L20 29 L11 20 Z"/>
+      </svg>
+      Lar Limpo
+    </a>
+    <nav class="nav" aria-label="Menu">
+      <a href="#servicos" data-i18n="nav_services">Serviços</a>
+      <a href="#como" data-i18n="nav_how">Como funciona</a>
+      <a href="#porque" data-i18n="nav_why">Porquê nós</a>
+      <a href="#contacto" data-i18n="nav_contact">Contacto</a>
+    </nav>
+    <div class="top-right">
+      <div class="lang" role="group" aria-label="Idioma / Language / Idioma">
+        <button type="button" data-lang="pt" aria-pressed="true">PT</button>
+        <button type="button" data-lang="en" aria-pressed="false">EN</button>
+        <button type="button" data-lang="es" aria-pressed="false">ES</button>
+      </div>
+      <a class="btn small" href="#reservar" data-i18n="book">Reservar</a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="inicio">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow rise" data-i18n="hero_eyebrow">E se limpar fosse a parte fácil?</p>
+        <h1 class="rise" style="--d:.08s"><span data-i18n="hero_title_a">Chegue a casa</span> <em data-i18n="hero_title_b">e sinta o cheirinho a limpo.</em></h1>
+        <p class="sub rise" style="--d:.16s" data-i18n="hero_sub">Cansado de perder o fim de semana a limpar? Deixe tudo nas nossas mãos e aproveite o seu tempo. Casas, escritórios e zonas comuns, com um sorriso.</p>
+        <div class="cta-row rise" style="--d:.24s">
+          <a class="btn" href="#reservar" data-i18n="cta_book">Reservar limpeza</a>
+          <a class="btn ghost" data-wa target="_blank" rel="noopener" href="https://wa.me/351936308861">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11.5a8 8 0 0 1-11.9 7L4 20l1.6-3.9A8 8 0 1 1 20 11.5Z"/><path d="M9 9.5c.2 2.2 2.3 4.3 4.5 4.5l1.2-1.2-1.8-1-.8.6a3.5 3.5 0 0 1-1.6-1.6l.6-.8-1-1.8L9 9.5Z"/></svg>
+            <span data-i18n="cta_wa">Falar no WhatsApp</span>
+          </a>
+        </div>
+      </div>
+      <div class="panel rise" style="--d:.2s" aria-hidden="true">
+        <svg class="tiles" id="tiles" viewBox="0 0 400 480" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <pattern id="az" width="80" height="80" patternUnits="userSpaceOnUse">
+              <rect class="t-bg" width="80" height="80"/>
+              <g class="t-petal"><circle cx="40" cy="0" r="28"/><circle cx="80" cy="40" r="28"/><circle cx="40" cy="80" r="28"/><circle cx="0" cy="40" r="28"/></g>
+              <path class="t-gem" d="M40 24 L56 40 L40 56 L24 40 Z"/>
+            </pattern>
+          </defs>
+          <rect width="400" height="480" fill="url(#az)"/>
+        </svg>
+        <div class="badge">
+          <svg viewBox="0 0 40 40"><g class="t-petal"><circle cx="20" cy="4" r="12"/><circle cx="36" cy="20" r="12"/><circle cx="20" cy="36" r="12"/><circle cx="4" cy="20" r="12"/></g><path class="t-gem" d="M20 11 L29 20 L20 29 L11 20 Z"/></svg>
+          <div><b>Lar Limpo</b><span data-i18n="badge">Em Tomar, tudo a brilhar</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="servicos" class="band">
+    <div class="wrap">
+      <p class="eyebrow reveal" data-i18n="nav_services">Serviços</p>
+      <h2 class="h2 reveal" style="--d:.06s" data-i18n="services_title">O que vamos deixar a brilhar?</h2>
+      <div class="grid3">
+        <article class="card reveal from-left">
+          <svg class="ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 23 24 8l18 15"/><path d="M10 20v20h28V20"/><path d="M20 40V28h8v12"/></svg>
+          <h3 data-i18n="s1_t">A sua casa</h3>
+          <p data-i18n="s1_d">Da cozinha às casas de banho, dos vidros ao chão. Limpeza do dia a dia ou a fundo, como preferir.</p>
+        </article>
+        <article class="card reveal" style="--d:.1s">
+          <svg class="ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="6" width="30" height="36" rx="2"/><path d="M16 14h4M28 14h4M16 22h4M28 22h4M16 30h4M28 30h4"/><path d="M21 42v-6h6v6"/></svg>
+          <h3 data-i18n="s2_t">O seu escritório</h3>
+          <p data-i18n="s2_d">Chegar de manhã a um espaço limpo muda o dia. Limpamos antes de abrir ou depois de fechar.</p>
+        </article>
+        <article class="card reveal from-right" style="--d:.2s">
+          <svg class="ico" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 40h9v-8h9v-8h9v-8h9"/><path d="M6 40h36"/></svg>
+          <h3 data-i18n="s3_t">Escadas e zonas comuns</h3>
+          <p data-i18n="s3_d">Entradas, escadas e corredores que causam boa impressão a quem chega. Com visitas regulares.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="como">
+    <div class="wrap">
+      <p class="eyebrow reveal" data-i18n="nav_how">Como funciona</p>
+      <h2 class="h2 reveal" style="--d:.06s" data-i18n="how_title">Como é que isto funciona? Fácil.</h2>
+      <div class="steps">
+        <div class="step reveal">
+          <div><h3 data-i18n="h1_t">Diga-nos o que precisa</h3><p data-i18n="h1_d">Que serviço? Que dia? Escreva-nos pelo formulário ou pelo WhatsApp, em dois minutos.</p></div>
+        </div>
+        <div class="step reveal" style="--d:.1s">
+          <div><h3 data-i18n="h2_t">Combinamos o preço</h3><p data-i18n="h2_d">Sem letras pequenas. Recebe um orçamento claro e decide com calma.</p></div>
+        </div>
+        <div class="step reveal" style="--d:.2s">
+          <div><h3 data-i18n="h3_t">Nós tratamos do resto</h3><p data-i18n="h3_d">Chegamos à hora combinada e deixamos tudo a brilhar. Só tem de abrir a porta.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="porque" class="band">
+    <div class="wrap">
+      <p class="eyebrow reveal" data-i18n="nav_why">Porquê nós</p>
+      <h2 class="h2 reveal" style="--d:.06s" data-i18n="why_title">Porque é que vai gostar de nós?</h2>
+      <div class="why">
+        <div class="reveal"><h3 data-i18n="w1_t">Orçamento sem compromisso</h3><p data-i18n="w1_d">Perguntar não custa nada. Diga-nos o que precisa e respondemos com um preço claro.</p></div>
+        <div class="reveal" style="--d:.08s"><h3 data-i18n="w2_t">Horários à medida</h3><p data-i18n="w2_d">Manhã, tarde ou fim de semana? Ajustamo-nos à sua rotina, não o contrário.</p></div>
+        <div class="reveal" style="--d:.16s"><h3 data-i18n="w3_t">Olho para o detalhe</h3><p data-i18n="w3_d">Cantos, rodapés, vidros e puxadores. É nos pormenores que se nota a diferença.</p></div>
+        <div class="reveal" style="--d:.24s"><h3 data-i18n="w4_t">Trato próximo</h3><p data-i18n="w4_d">Somos um negócio pequeno. Fala diretamente com quem faz o trabalho.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="reservar">
+    <div class="wrap book">
+      <div class="reveal">
+        <p class="eyebrow" data-i18n="book">Reservar</p>
+        <h2 class="h2" data-i18n="book_title">Vamos marcar a sua limpeza?</h2>
+        <p class="fine" data-i18n="book_sub">Preencha em meio minuto e abra o WhatsApp com a mensagem pronta. Só falta carregar em enviar.</p>
+        <p class="fine" data-i18n="areas">Trabalhamos em Tomar, no distrito de Santarém. Fica noutra zona? Diga-nos onde está e confirmamos se conseguimos chegar.</p>
+      </div>
+      <form class="form reveal" id="bk" style="--d:.1s" novalidate>
+        <div class="field">
+          <label for="f-name" data-i18n="f_name">O seu nome</label>
+          <input id="f-name" name="name" type="text" autocomplete="name" data-i18n-ph="f_name_ph" placeholder="Maria Silva">
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="f-service" data-i18n="f_service">Serviço</label>
+            <select id="f-service" name="service">
+              <option value="home" data-i18n="o_home">Casa</option>
+              <option value="office" data-i18n="o_office">Escritório</option>
+              <option value="common" data-i18n="o_common">Zona comum</option>
+              <option value="other" data-i18n="o_other">Outro</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-date"><span data-i18n="f_date">Data preferida</span> <small data-i18n="f_opt">(opcional)</small></label>
+            <input id="f-date" name="date" type="date">
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-notes"><span data-i18n="f_notes">Notas</span> <small data-i18n="f_opt">(opcional)</small></label>
+          <textarea id="f-notes" name="notes" data-i18n-ph="f_notes_ph" placeholder="Zona, tamanho da casa, algo especial?"></textarea>
+        </div>
+        <a class="btn" id="send" target="_blank" rel="noopener" href="https://wa.me/351936308861">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 11.5a8 8 0 0 1-11.9 7L4 20l1.6-3.9A8 8 0 1 1 20 11.5Z"/><path d="M9 9.5c.2 2.2 2.3 4.3 4.5 4.5l1.2-1.2-1.8-1-.8.6a3.5 3.5 0 0 1-1.6-1.6l.6-.8-1-1.8L9 9.5Z"/></svg>
+          <span data-i18n="f_send">Reservar pelo WhatsApp</span>
+        </a>
+        <p class="hint" data-i18n="f_hint">Abrimos o WhatsApp com tudo preenchido.</p>
+      </form>
+    </div>
+  </section>
+
+  <section id="contacto" class="band">
+    <div class="wrap contact">
+      <p class="eyebrow reveal" data-i18n="nav_contact">Contacto</p>
+      <h2 class="h2 reveal" style="--d:.06s" data-i18n="contact_title">Prefere falar connosco?</h2>
+      <p class="num reveal" style="--d:.12s" id="phone">+351 936 308 861</p>
+      <div class="cta-row reveal" style="--d:.18s">
+        <a class="btn" data-wa target="_blank" rel="noopener" href="https://wa.me/351936308861"><span data-i18n="cta_wa">Falar no WhatsApp</span></a>
+        <button class="btn ghost" type="button" id="copy"><span data-i18n="copy">Copiar número</span></button>
+        <a class="btn ghost" href="tel:+351936308861" data-i18n="call">Ligar</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <span>© 2026 Lar Limpo</span>
+  <span data-i18n="foot">Limpeza em Tomar: casas, escritórios e zonas comuns</span>
+</footer>
+
+<div class="float"><a class="btn" href="#reservar" data-i18n="cta_book">Reservar limpeza</a></div>
+
+<script>
+(function () {
+  var PHONE = "351936308861";
+  var T = {
+    pt: {
+      nav_services: "Serviços", nav_how: "Como funciona", nav_why: "Porquê nós", nav_contact: "Contacto", book: "Reservar",
+      hero_eyebrow: "E se limpar fosse a parte fácil?", hero_title_a: "Chegue a casa", hero_title_b: "e sinta o cheirinho a limpo.",
+      hero_sub: "Cansado de perder o fim de semana a limpar? Deixe tudo nas nossas mãos e aproveite o seu tempo. Casas, escritórios e zonas comuns, com um sorriso.",
+      cta_book: "Reservar limpeza", cta_wa: "Falar no WhatsApp", badge: "Em Tomar, tudo a brilhar",
+      services_title: "O que vamos deixar a brilhar?",
+      s1_t: "A sua casa", s1_d: "Da cozinha às casas de banho, dos vidros ao chão. Limpeza do dia a dia ou a fundo, como preferir.",
+      s2_t: "O seu escritório", s2_d: "Chegar de manhã a um espaço limpo muda o dia. Limpamos antes de abrir ou depois de fechar.",
+      s3_t: "Escadas e zonas comuns", s3_d: "Entradas, escadas e corredores que causam boa impressão a quem chega. Com visitas regulares.",
+      how_title: "Como é que isto funciona? Fácil.",
+      h1_t: "Diga-nos o que precisa", h1_d: "Que serviço? Que dia? Escreva-nos pelo formulário ou pelo WhatsApp, em dois minutos.",
+      h2_t: "Combinamos o preço", h2_d: "Sem letras pequenas. Recebe um orçamento claro e decide com calma.",
+      h3_t: "Nós tratamos do resto", h3_d: "Chegamos à hora combinada e deixamos tudo a brilhar. Só tem de abrir a porta.",
+      why_title: "Porque é que vai gostar de nós?",
+      w1_t: "Orçamento sem compromisso", w1_d: "Perguntar não custa nada. Diga-nos o que precisa e respondemos com um preço claro.",
+      w2_t: "Horários à medida", w2_d: "Manhã, tarde ou fim de semana? Ajustamo-nos à sua rotina, não o contrário.",
+      w3_t: "Olho para o detalhe", w3_d: "Cantos, rodapés, vidros e puxadores. É nos pormenores que se nota a diferença.",
+      w4_t: "Trato próximo", w4_d: "Somos um negócio pequeno. Fala diretamente com quem faz o trabalho.",
+      book_title: "Vamos marcar a sua limpeza?",
+      book_sub: "Preencha em meio minuto e abra o WhatsApp com a mensagem pronta. Só falta carregar em enviar.",
+      areas: "Trabalhamos em Tomar, no distrito de Santarém. Fica noutra zona? Diga-nos onde está e confirmamos se conseguimos chegar.",
+      f_name: "O seu nome", f_name_ph: "Maria Silva", f_service: "Serviço", f_date: "Data preferida", f_opt: "(opcional)",
+      f_notes: "Notas", f_notes_ph: "Zona, tamanho da casa, algo especial?",
+      o_home: "Casa", o_office: "Escritório", o_common: "Zona comum", o_other: "Outro",
+      f_send: "Reservar pelo WhatsApp", f_hint: "Abrimos o WhatsApp com tudo preenchido.",
+      contact_title: "Prefere falar connosco?", copy: "Copiar número", copied: "Número copiado", call: "Ligar",
+      foot: "Limpeza em Tomar: casas, escritórios e zonas comuns",
+      m_hi: "Olá! Gostaria de reservar uma limpeza.", m_name: "Nome", m_service: "Serviço", m_date: "Data preferida", m_notes: "Notas",
+      m_generic: "Olá! Gostaria de pedir um orçamento de limpeza."
+    },
+    en: {
+      nav_services: "Services", nav_how: "How it works", nav_why: "Why us", nav_contact: "Contact", book: "Book",
+      hero_eyebrow: "What if cleaning was the easy part?", hero_title_a: "Come home to", hero_title_b: "that fresh-clean feeling.",
+      hero_sub: "Tired of losing your weekend to scrubbing? Leave it all in our hands and enjoy your time. Homes, offices and shared areas, done with a smile.",
+      cta_book: "Book a clean", cta_wa: "Chat on WhatsApp", badge: "In Tomar, everything sparkling",
+      services_title: "What shall we make sparkle?",
+      s1_t: "Your home", s1_d: "From kitchen to bathrooms, windows to floors. Everyday or deep cleaning, however you like it.",
+      s2_t: "Your office", s2_d: "Walking into a spotless workspace changes the day. We clean before opening or after closing.",
+      s3_t: "Stairs and shared areas", s3_d: "Entrances, stairs and corridors that make a good first impression. With regular visits.",
+      how_title: "How does it work? Easy.",
+      h1_t: "Tell us what you need", h1_d: "Which service? Which day? Write to us through the form or WhatsApp, in two minutes.",
+      h2_t: "We agree the price", h2_d: "No small print. You get a clear quote and decide at your own pace.",
+      h3_t: "We take care of the rest", h3_d: "We arrive on time and leave everything sparkling. All you do is open the door.",
+      why_title: "Why will you like us?",
+      w1_t: "No-obligation quote", w1_d: "Asking costs nothing. Tell us what you need and we will reply with a clear price.",
+      w2_t: "Flexible hours", w2_d: "Morning, afternoon or weekend? We fit around your routine, not the other way round.",
+      w3_t: "An eye for detail", w3_d: "Corners, skirting boards, glass and handles. The difference is in the details.",
+      w4_t: "Personal service", w4_d: "We are a small business. You talk directly to the person doing the work.",
+      book_title: "Shall we book your clean?",
+      book_sub: "Fill it in in half a minute and open WhatsApp with the message ready. Just hit send.",
+      areas: "We work in Tomar, in the Santarém district. Somewhere else? Tell us where you are and we will confirm whether we can reach you.",
+      f_name: "Your name", f_name_ph: "Maria Silva", f_service: "Service", f_date: "Preferred date", f_opt: "(optional)",
+      f_notes: "Notes", f_notes_ph: "Area, size of the home, anything special?",
+      o_home: "Home", o_office: "Office", o_common: "Shared area", o_other: "Other",
+      f_send: "Book on WhatsApp", f_hint: "We open WhatsApp with everything filled in.",
+      contact_title: "Prefer to talk to us?", copy: "Copy number", copied: "Number copied", call: "Call",
+      foot: "Cleaning in Tomar: homes, offices and shared areas",
+      m_hi: "Hello! I would like to book a clean.", m_name: "Name", m_service: "Service", m_date: "Preferred date", m_notes: "Notes",
+      m_generic: "Hello! I would like a quote for a cleaning service."
+    },
+    es: {
+      nav_services: "Servicios", nav_how: "Cómo funciona", nav_why: "Por qué nosotros", nav_contact: "Contacto", book: "Reservar",
+      hero_eyebrow: "¿Y si limpiar fuera la parte fácil?", hero_title_a: "Llega a casa y", hero_title_b: "disfruta del olor a limpio.",
+      hero_sub: "¿Cansado de perder el fin de semana limpiando? Déjalo todo en nuestras manos y disfruta de tu tiempo. Hogares, oficinas y zonas comunes, con una sonrisa.",
+      cta_book: "Reservar limpieza", cta_wa: "Hablar por WhatsApp", badge: "En Tomar, todo reluciente",
+      services_title: "¿Qué dejamos reluciente?",
+      s1_t: "Tu hogar", s1_d: "De la cocina a los baños, de los cristales al suelo. Limpieza de diario o a fondo, como prefieras.",
+      s2_t: "Tu oficina", s2_d: "Llegar por la mañana a un espacio limpio cambia el día. Limpiamos antes de abrir o después de cerrar.",
+      s3_t: "Escaleras y zonas comunes", s3_d: "Portales, escaleras y pasillos que causan buena impresión a quien llega. Con visitas regulares.",
+      how_title: "¿Cómo funciona? Fácil.",
+      h1_t: "Cuéntanos qué necesitas", h1_d: "¿Qué servicio? ¿Qué día? Escríbenos por el formulario o por WhatsApp, en dos minutos.",
+      h2_t: "Acordamos el precio", h2_d: "Sin letra pequeña. Recibes un presupuesto claro y decides con calma.",
+      h3_t: "Nosotros hacemos el resto", h3_d: "Llegamos a la hora acordada y lo dejamos todo reluciente. Tú solo abres la puerta.",
+      why_title: "¿Por qué te vamos a gustar?",
+      w1_t: "Presupuesto sin compromiso", w1_d: "Preguntar no cuesta nada. Cuéntanos qué necesitas y te respondemos con un precio claro.",
+      w2_t: "Horarios a tu medida", w2_d: "¿Mañana, tarde o fin de semana? Nos adaptamos a tu rutina, no al revés.",
+      w3_t: "Ojo al detalle", w3_d: "Esquinas, rodapiés, cristales y tiradores. La diferencia está en los detalles.",
+      w4_t: "Trato cercano", w4_d: "Somos un negocio pequeño. Hablas directamente con quien hace el trabajo.",
+      book_title: "¿Reservamos tu limpieza?",
+      book_sub: "Rellénalo en medio minuto y abre WhatsApp con el mensaje listo. Solo falta darle a enviar.",
+      areas: "Trabajamos en Tomar, en el distrito de Santarém. ¿Estás en otra zona? Dinos dónde estás y te confirmamos si podemos llegar.",
+      f_name: "Tu nombre", f_name_ph: "María Silva", f_service: "Servicio", f_date: "Fecha preferida", f_opt: "(opcional)",
+      f_notes: "Notas", f_notes_ph: "Zona, tamaño de la casa, ¿algo especial?",
+      o_home: "Hogar", o_office: "Oficina", o_common: "Zona común", o_other: "Otro",
+      f_send: "Reservar por WhatsApp", f_hint: "Abrimos WhatsApp con todo rellenado.",
+      contact_title: "¿Prefieres hablar con nosotros?", copy: "Copiar número", copied: "Número copiado", call: "Llamar",
+      foot: "Limpieza en Tomar: hogares, oficinas y zonas comunes",
+      m_hi: "¡Hola! Me gustaría reservar una limpieza.", m_name: "Nombre", m_service: "Servicio", m_date: "Fecha preferida", m_notes: "Notas",
+      m_generic: "¡Hola! Me gustaría pedir un presupuesto de limpieza."
+    }
+  };
+
+  var lang = "pt";
+  try {
+    var saved = localStorage.getItem("lar-limpo-lang");
+    if (saved && T[saved]) lang = saved;
+    else {
+      var nav = (navigator.language || "pt").slice(0, 2);
+      if (T[nav]) lang = nav;
+    }
+  } catch (e) {}
+
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+
+  function fmtDate(v) {
+    if (!v) return "";
+    var p = v.split("-");
+    return p.length === 3 ? p[2] + "/" + p[1] + "/" + p[0] : v;
+  }
+
+  function updateLinks() {
+    var t = T[lang];
+    var base = "https://wa.me/" + PHONE + "?text=";
+    $$("[data-wa]").forEach(function (a) { a.href = base + encodeURIComponent(t.m_generic); });
+    var name = $("#f-name").value.trim();
+    var sel = $("#f-service");
+    var service = sel.options[sel.selectedIndex].textContent;
+    var date = fmtDate($("#f-date").value);
+    var notes = $("#f-notes").value.trim();
+    var lines = [t.m_hi];
+    if (name) lines.push(t.m_name + ": " + name);
+    lines.push(t.m_service + ": " + service);
+    if (date) lines.push(t.m_date + ": " + date);
+    if (notes) lines.push(t.m_notes + ": " + notes);
+    $("#send").href = base + encodeURIComponent(lines.join("\n"));
+  }
+
+  function setLang(l) {
+    lang = l;
+    var t = T[l];
+    document.documentElement.lang = l;
+    $$("[data-i18n]").forEach(function (el) {
+      var k = el.getAttribute("data-i18n");
+      if (t[k] != null) el.textContent = t[k];
+    });
+    $$("[data-i18n-ph]").forEach(function (el) {
+      var k = el.getAttribute("data-i18n-ph");
+      if (t[k] != null) el.setAttribute("placeholder", t[k]);
+    });
+    $$(".lang button").forEach(function (b) {
+      b.setAttribute("aria-pressed", b.getAttribute("data-lang") === l ? "true" : "false");
+    });
+    try { localStorage.setItem("lar-limpo-lang", l); } catch (e) {}
+    updateLinks();
+  }
+
+  $$(".lang button").forEach(function (b) {
+    b.addEventListener("click", function () { setLang(b.getAttribute("data-lang")); });
+  });
+  $("#bk").addEventListener("submit", function (e) { e.preventDefault(); });
+  ["input", "change"].forEach(function (ev) { $("#bk").addEventListener(ev, updateLinks); });
+
+  /* Copy number */
+  $("#copy").addEventListener("click", function () {
+    var label = $("#copy span");
+    function done() {
+      label.textContent = T[lang].copied;
+      setTimeout(function () { label.textContent = T[lang].copy; }, 2000);
+    }
+    function fallback() {
+      var r = document.createRange();
+      r.selectNodeContents($("#phone"));
+      var s = window.getSelection();
+      s.removeAllRanges();
+      s.addRange(r);
+    }
+    try {
+      navigator.clipboard.writeText("+351 936 308 861").then(done, fallback);
+    } catch (e) { fallback(); }
+  });
+
+  /* Scroll reveal */
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var els = $$(".reveal");
+  if (!reduce && "IntersectionObserver" in window) {
+    document.documentElement.classList.add("anim");
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.05, rootMargin: "0px 0px -6% 0px" });
+    els.forEach(function (el) { io.observe(el); });
+    setTimeout(function () { els.forEach(function (el) { el.classList.add("in"); }); }, 6000);
+  }
+
+  /* Gentle parallax on the tile panel */
+  var tiles = $("#tiles");
+  if (tiles && !reduce) {
+    var ticking = false;
+    window.addEventListener("scroll", function () {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        var y = Math.min(window.scrollY, 700);
+        tiles.style.transform = "translateY(" + (y * 0.07 - 20).toFixed(1) + "px)";
+        ticking = false;
+      });
+    }, { passive: true });
+  }
+
+  setLang(lang);
+})();
+</script>
